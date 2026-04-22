@@ -14,6 +14,7 @@ Impacto:
     viabilizando o faturamento recorrente de múltiplas filiais.
 
 Autor: Andrey Araujo
+Versão: 1.0.0
 """
 
 import os
