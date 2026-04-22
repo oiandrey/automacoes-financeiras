@@ -16,7 +16,7 @@ Impacto:
 Autor: Andrey Araujo
 Versão: 1.0.0
 """
-
+from nfse_processor.alertas import alerta_erro, relatorio_execucao
 import os
 import shutil
 import time
@@ -405,12 +405,19 @@ def main():
                 log.error("Erro inesperado no arquivo %s: %s", caminho, e)
                 total_erros += 1
                 registrar(codigo, nome, "erro", str(e))
+                alerta_erro(codigo, nome, str(e))
 
     log.info("=" * 50)
     log.info("Processamento finalizado.")
     log.info("Total processados: %d | Erros: %d", total_processados, total_erros)
     log.info("=" * 50)
 
-
+    relatorio_execucao(
+    total=total_processados,
+    sucessos=total_processados - total_erros,
+    erros=total_erros,
+    filiais=CODIGOS
+)
+    
 if __name__ == "__main__":
     main()
