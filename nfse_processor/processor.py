@@ -23,10 +23,12 @@ import time
 import logging
 from decimal import Decimal, InvalidOperation
 from datetime import datetime
+from nfse_processor.db import criar_tabelas, registrar
+
 
 # ======================
 # CONFIGURAÇÃO
-# ======================
+# ======================d
 
 # Lê o caminho base de variável de ambiente para não expor caminhos de rede
 # Configure no seu ambiente: set NFSE_BASE_PATH=\\servidor\pasta
@@ -354,6 +356,7 @@ def processar_arquivo(caminho: str, pasta_filial: str, codigo: str) -> None:
         try:
             shutil.move(caminho, destino)
             log.info("Movido para: %s", destino)
+            registrar(codigo, nome_arquivo, "sucesso", f"Movido para {destino}")
             break
         except Exception as e:
             log.warning("Tentativa %d falhou ao mover %s: %s", tentativa + 1, caminho, e)
@@ -401,6 +404,7 @@ def main():
             except Exception as e:
                 log.error("Erro inesperado no arquivo %s: %s", caminho, e)
                 total_erros += 1
+                registrar(codigo, nome, "erro", str(e))
 
     log.info("=" * 50)
     log.info("Processamento finalizado.")
